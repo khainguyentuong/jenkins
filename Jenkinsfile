@@ -31,13 +31,14 @@ try {
 					sh "mvn clean package"
 				}    
 
+				/*
 				stage("Run SonarQube Analysis") {
 					def scannerHome = tool "SonarQubeScanner";
 					withSonarQubeEnv('My SonarQube Server') {
 						sh "${scannerHome}/bin/sonar-scanner"
 					}
 				}				
-				
+				*/
 				stage("Archive Artifacts") {
 					archiveArtifacts artifacts: 
 						"target/*.jar",
