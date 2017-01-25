@@ -20,25 +20,27 @@ def notify(message) {
 }
 
 try {
-	node {
-		stage("pull") {
-			git "https://github.com/spring-projects/spring-boot.git"
-		}
-		
-		dir("spring-boot-samples/spring-boot-sample-atmosphere") {
-			stage("build") {
-				sh "mvn clean package"
-			}    
-
-			stage("sonar-scanner") {
-				tool name: "SonarQubeScanner",
-				type: "hudson.plugins.sonar.SonarRunnerInstallation"
+	timestamps {
+		node {
+			stage("pull") {
+				git "https://github.com/spring-projects/spring-boot.git"
 			}
 			
-			stage("archive") {
-				archiveArtifacts artifacts: 
-					"target/*.jar",
-					onlyIfSuccessful: true
+			dir("spring-boot-samples/spring-boot-sample-atmosphere") {
+				stage("build") {
+					sh "mvn clean package"
+				}    
+
+				stage("sonar-scanner") {
+					tool name: "SonarQubeScanner",
+					type: "hudson.plugins.sonar.SonarRunnerInstallation"
+				}
+				
+				stage("archive") {
+					archiveArtifacts artifacts: 
+						"target/*.jar",
+						onlyIfSuccessful: true
+				}
 			}
 		}
 	}
