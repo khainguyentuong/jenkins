@@ -33,7 +33,7 @@ try {
 
 				stage("Run SonarQube Analysis") {
 					def scannerHome = tool "SonarQubeScanner";
-					sh "${scannerHome}/bin/sonar-scanner"
+					sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=${env.JOB_NAME}-${env.BUILD_NUMBER} -Dsonar.sources=."
 				}				
 
 				stage("Archive Artifacts") {
