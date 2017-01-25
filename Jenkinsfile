@@ -11,6 +11,14 @@ import groovy.json.JsonBuilder
 import groovy.json.JsonOutput
 import java.net.URL
 
+def notify(message) {
+	emailext(
+		to: "khainguyentuong@gmail.com",
+		subject: "${message}: ${env.JOB_NAME} (${env.BUILD_NUMBER})",
+		body: "<a href=${env.BUILD_URL}>${env.JOB_NAME}</a>"
+	)
+}
+
 try {
 	node {
 		stage("checkout") {
@@ -40,14 +48,6 @@ catch (err) {
 	currentBuild.result = "FAILURE"
 }
 finally {
-	def notify(message) {
-		emailext(
-			to: "khainguyentuong@gmail.com",
-			subject: "${message}: ${env.JOB_NAME} (${env.BUILD_NUMBER})",
-			body: "<a href=${env.BUILD_URL}>${env.JOB_NAME}</a>"
-		)
-	}
-	
 	if (err) {
 		throw err
 	}	
