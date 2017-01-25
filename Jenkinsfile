@@ -47,8 +47,3 @@ catch (err) {
 	notify("Error ${err}")
 	currentBuild.result = "FAILURE"
 }
-finally {
-	if (err) {
-		throw err
-	}	
-}
