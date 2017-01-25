@@ -32,9 +32,11 @@ try {
 				}    
 
 				stage("Run SonarQube Analysis") {
-					def sonarQubeScanner = tool name: "SonarQubeScanner", type: "hudson.plugins.sonar.SonarRunnerInstallation"
-					sh "sonarQubeScanner"
-				}
+					def scannerHome = tool "SonarQubeScanner";
+					withSonarQubeEnv('My SonarQube Server') {
+						sh "${scannerHome}/bin/sonar-scanner"
+					}
+				}				
 				
 				stage("Archive Artifacts") {
 					archiveArtifacts artifacts: 
