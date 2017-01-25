@@ -22,21 +22,21 @@ def notify(message) {
 try {
 	timestamps {
 		node {
-			stage("pull") {
+			stage("Pull Code") {
 				git "https://github.com/spring-projects/spring-boot.git"
 			}
 			
 			dir("spring-boot-samples/spring-boot-sample-atmosphere") {
-				stage("build") {
+				stage("Build and Test") {
 					sh "mvn clean package"
 				}    
 
-				stage("sonar-scanner") {
-					tool name: "SonarQubeScanner",
-					type: "hudson.plugins.sonar.SonarRunnerInstallation"
+				stage("Run SonarQube Analysis") {
+					def sonarQubeScanner = tool name: "SonarQubeScanner", type: "hudson.plugins.sonar.SonarRunnerInstallation"
+					sh "sonarQubeScanner"
 				}
 				
-				stage("archive") {
+				stage("Archive Artifacts") {
 					archiveArtifacts artifacts: 
 						"target/*.jar",
 						onlyIfSuccessful: true
