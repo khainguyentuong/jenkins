@@ -1,36 +1,54 @@
-node {
-    try {    
-        stage('checkout') {
-            git 'https://github.com/spring-projects/spring-boot.git'
-        }
-        
-        
-        dir('spring-boot-samples/spring-boot-sample-atmosphere') {
-            stage('build') {
-                sh 'mvn clean package'
-            }    
+#!/usr/bin/env groovy
+ 
+/**
+ * Jenkinsfile for Jenkins2 Pipeline
+ */
+ 
+import hudson.model.*
+import hudson.EnvVars
+import groovy.json.JsonSlurperClassic
+import groovy.json.JsonBuilder
+import groovy.json.JsonOutput
+import java.net.URL
 
-            stage('sonarqube') {
-                tool name: 'SonarQubeScanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
-            }
-            
-            stage('package') {
-                archiveArtifacts artifacts: 
-                    'target/*.jar', 
-                    onlyIfSuccessful: true
-            }
-        }
-    }
-    catch (err) {
-        notify("Error ${err}")
-        currentBuild.result = 'FAILURE'
-    }
+try {
+	node {
+		stage("checkout") {
+			git "https://github.com/spring-projects/spring-boot.git"
+		}
+		
+		dir("spring-boot-samples/spring-boot-sample-atmosphere") {
+			stage("build") {
+				sh "mvn clean package"
+			}    
+
+			stage("sonar-scanner") {
+				tool name: "SonarQubeScanner",
+				type: "hudson.plugins.sonar.SonarRunnerInstallation"
+			}
+			
+			stage("archive") {
+				archiveArtifacts artifacts: 
+					"target/*.jar",
+					onlyIfSuccessful: true
+			}
+		}
+	}
+}	
+catch (err) {
+	notify("Error ${err}")
+	currentBuild.result = "FAILURE"
 }
-
-def notify(message) {
-    emailext(
-        to: 'khainguyentuong@gmail.com',
-        subject: "${message}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-        body: "<a href='${env.BUILD_URL}'>${env.JOB_NAME}</a>"
-    )
-}  
+finally {
+	def notify(message) {
+		emailext(
+			to: "khainguyentuong@gmail.com",
+			subject: "${message}: ${env.JOB_NAME} (${env.BUILD_NUMBER})",
+			body: "<a href=${env.BUILD_URL}>${env.JOB_NAME}</a>"
+		)
+	}
+	
+	if (err) {
+		throw err
+	}	
+}
