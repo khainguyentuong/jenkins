@@ -47,7 +47,3 @@ catch (err) {
 	notify("Error ${err}")
 	currentBuild.result = "FAILURE"
 }
-
-wrap([$class: 'TimestamperBuildWrapper']) {
-    echo "Done"
-}
