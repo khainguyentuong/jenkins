@@ -23,7 +23,8 @@ try {
 	timestamps {
 		node {
 			stage("Pull Code") {
-				git "https://github.com/spring-projects/spring-boot.git"
+				git branch: "master",
+					url: "https://github.com/spring-projects/spring-boot.git"
 			}
 			
 			dir("spring-boot-samples/spring-boot-sample-atmosphere") {
@@ -33,7 +34,12 @@ try {
 
 				stage("Run SonarQube Analysis") {
 					def scannerHome = tool "SonarQubeScanner";
-					sh "${scannerHome}/bin/sonar-scanner -Dsonar.host.url=http://10.154.130.220/sonar -Dsonar.verbose=true -Dsonar.projectKey=${env.JOB_NAME} -Dsonar.projectVersion=1.0.${env.BUILD_NUMBER} -Dsonar.sources=."
+					sh "${scannerHome}/bin/sonar-scanner 
+						-Dsonar.host.url=http://10.154.130.220/sonar 
+						-Dsonar.verbose=true 
+						-Dsonar.projectKey=${env.JOB_NAME} 
+						-Dsonar.projectVersion=1.0.${env.BUILD_NUMBER} 
+						-Dsonar.sources=."
 				}				
 
 				stage("Archive Artifacts") {
