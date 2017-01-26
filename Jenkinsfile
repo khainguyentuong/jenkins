@@ -11,7 +11,19 @@ import groovy.json.JsonBuilder
 import groovy.json.JsonOutput
 import java.net.URL
 
-def notify(message) {
+def notifySlack(text, channel) {
+    def slackURL = "https://hooks.slack.com/services/xxxxxxx/yyyyyyyy/zzzzzzzzzz"
+    def payload = JsonOutput.toJson([
+		text      : text,
+		channel   : channel,
+		username  : "jenkins",
+		icon_emoji: ":jenkins:"
+	])
+	
+    sh "curl -X POST --data-urlencode \'payload=${payload}\' ${slackURL}"
+}
+
+def notifyEmail(message) {
 	emailext(
 		to: "khainguyentuong@gmail.com",
 		subject: "${message}: ${env.JOB_NAME} (${env.BUILD_NUMBER})",
@@ -29,9 +41,9 @@ try {
 				)	
 			}
 			
-			dir ("spring-boot-samples/spring-boot-sample-atmosphere") {
+			dir ("spring-boot-samples/spring-boot-sample-simple") {
 				stage ("Build") {
-					sh ("mvn clean package")
+					sh ("gradle clean install")
 				}    
 
 				stage ("Run SonarQube Analysis") {
@@ -113,6 +125,6 @@ try {
 	}
 }	
 catch (err) {
-	notify("Error ${err}")
+	notifyEmail("Error ${err}")
 	currentBuild.result = "FAILURE"
 }
