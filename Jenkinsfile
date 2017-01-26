@@ -49,23 +49,23 @@ try {
 			stage("Execute Funtional Test") {
 				parallel test1: {
 					println "Test1..."
-					Thread.sleep(3000)
+					sleep(5)
 				}, 
 				test2: {
 					println "Test2..."
-					Thread.sleep(3000)
+					sleep(5)
 				}, 
 				test3: {
 					println "Test3..."
-					Thread.sleep(3000)
+					sleep(5)
 				},
 				test4: {
 					println "Test4..."
-					Thread.sleep(3000)
+					sleep(5)
 				},
 				test5: {
 					println "Test5..."
-					Thread.sleep(3000)
+					sleep(5)
 				}				
 			}	
 		}
