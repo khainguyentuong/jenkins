@@ -79,8 +79,8 @@ try {
 			}
 		}
 		
-		stage "Promotion..." {
-			input "Deploy to QA?'
+		stage ("Promotion...") {
+			input "Deploy to QA?"
 		}
 
 		stage (name: "Deploy to QA", concurrency: 1) {
@@ -90,8 +90,8 @@ try {
 			}
 		}
 		
-		stage "Promotion..." {
-			input "Deploy to Production?'
+		stage ("Promotion...") {
+			input "Deploy to Production?"
 		}
 		
 		stage (name: "Deploy to Production", concurrency: 1) {
