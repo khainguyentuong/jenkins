@@ -70,11 +70,27 @@ try {
 		
 		input "Deploy to Dev?"
 		
-		stage name: "Deploy", concurrency: 1
+		stage name: "Deploy to Dev", concurrency: 1
 		node ("linux") {
 			println "Deploy..."
 			sleep(10)	
 		}
+		
+		input "Deploy to QA?"
+		
+		stage name: "Deploy to QA", concurrency: 1
+		node ("linux") {
+			println "Deploy..."
+			sleep(10)	
+		}
+
+		input "Deploy to Production?"
+		
+		stage name: "Deploy to Production", concurrency: 1
+		node ("linux") {
+			println "Deploy..."
+			sleep(10)	
+		}		
 	}
 }	
 catch (err) {
