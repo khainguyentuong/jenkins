@@ -40,34 +40,39 @@ try {
 				}				
 
 				stage ("Archive Artifacts") {
-					archiveArtifacts artifacts: 
-						"target/*.jar",
+					archiveArtifacts (
+						artifacts: "target/*.jar",
 						onlyIfSuccessful: true
-					
-					stash (name: "binary", includes: "target/*")
+					)	
+					/*
+					stash (
+						name: "binary",
+						includes: "target/*"
+					)
+					*/
 				}
 			}
 		
 			stage ("Execute Funtional Test") {
 				parallel (
 					test1: {
-						println "Test1..."
+						println ("Test1...")
 						sh "sleep 5s" 
 					}, 
 					test2: {
-						println "Test2..."
+						println ("Test2...")
 						sh "sleep 5s" 
 					}, 
 					test3: {
-						println "Test3..."
+						println ("Test3...")
 						sh "sleep 5s" 
 					},
 					test4: {
-						println "Test4..."
+						println ("Test4...")
 						sh "sleep 5s" 
 					},
 					test5: {
-						println "Test5..."
+						println ("Test5...")
 						sh "sleep 5s" 
 					}
 				)	
@@ -76,29 +81,29 @@ try {
 		
 		stage (name: "Deploy to Dev", concurrency: 1) {
 			node ("linux") {
-				println "Deploy to Dev..."
+				println ("Deploy to Dev...")
 				sh "sleep 5s" 
 			}
 		}
 		
 		stage ("Promotion...") {
-			input "Deploy to QA?"
+			input ("Deploy to QA?")
 		}
 
 		stage (name: "Deploy to QA", concurrency: 1) {
 			node ("linux") {
-				println "Deploy to QA..."
+				println ("Deploy to QA...")
 				sh "sleep 5s" 
 			}
 		}
 		
 		stage ("Promotion...") {
-			input "Deploy to Production?"
+			input ("Deploy to Production?")
 		}
 		
 		stage (name: "Deploy to Production", concurrency: 1) {
 			node ("linux") {
-				println "Deploy to Production..."
+				println ("Deploy to Production...")
 				sh "sleep 5s" 
 			}
 		}	
