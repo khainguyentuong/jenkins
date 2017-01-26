@@ -21,7 +21,7 @@ def notify(message) {
 
 try {
 	timestamps {
-		node {
+		node ("linux") {
 			stage("Pull Code") {
 				git branch: "master",
 					url: "https://github.com/spring-projects/spring-boot.git"
