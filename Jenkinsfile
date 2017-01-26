@@ -100,18 +100,6 @@ try {
 			}
 		}		
 		
-		stage ("Promotion...") {
-			input ("Deploy to Production?")
-		}
-		
-		stage ("Deploy to Production") {
-			node ("linux") {
-				println ("Deploy to Production...")
-				unstash ("binary")
-				sh ("sleep 5s")
-			}
-		}
-		
 		stage ("Smoke Test") {
 			node ("linux") {
 				println ("Execute Smoke Test...")
