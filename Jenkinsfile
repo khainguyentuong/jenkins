@@ -22,9 +22,11 @@ def notify(message) {
 try {
 	timestamps {
 		node ("linux") {
-			stag e("Pull Code") {
-				git branch: "master",
+			stage ("Pull Code") {
+				git (
+					branch: "master",
 					url: "https://github.com/spring-projects/spring-boot.git"
+				)	
 			}
 			
 			dir ("spring-boot-samples/spring-boot-sample-atmosphere") {
