@@ -87,7 +87,7 @@ try {
 			input ("Deploy to QA?")
 		}
 
-		stage (name: "Deploy to QA", concurrency: 1) {
+		stage ("Deploy to QA") {
 			node ("linux") {
 				println ("Deploy to QA...")
 				unstash ("binary")
@@ -99,7 +99,7 @@ try {
 			input ("Deploy to Production?")
 		}
 		
-		stage (name: "Deploy to Production", concurrency: 1) {
+		stage ("Deploy to Production") {
 			node ("linux") {
 				println ("Deploy to Production...")
 				unstash ("binary")
