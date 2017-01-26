@@ -21,10 +21,6 @@ def notify(message) {
 
 try {
 	timestamps {
-		node ("master") {
-		
-		}
-		
 		node ("linux") {
 			stage("Pull Code") {
 				git branch: "master",
@@ -74,11 +70,10 @@ try {
 		
 		input "Deploy to Dev?"
 		
+		stage name: "Deploy", concurrency: 1
 		node ("linux") {
-			stage(name: "Deploy", concurrency: 1) {
-				println "Deploy..."
-				sleep(10)	
-			}
+			println "Deploy..."
+			sleep(10)	
 		}
 	}
 }	
