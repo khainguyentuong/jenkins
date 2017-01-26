@@ -43,6 +43,29 @@ try {
 						onlyIfSuccessful: true
 				}
 			}
+			
+			stage("Execute Funtional Test") {
+				parallel test1: {
+					println "Test1..."
+					sleep(5000)
+				}, 
+				test2: {
+					println "Test2..."
+					sleep(5000)
+				}, 
+				test3: {
+					println "Test3..."
+					sleep(5000)
+				},
+				test4: {
+					println "Test4..."
+					sleep(5000)
+				},
+				test5: {
+					println "Test5..."
+					sleep(5000)
+				}				
+			}	
 		}
 	}
 }	
