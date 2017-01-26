@@ -44,12 +44,11 @@ try {
 						artifacts: "target/*.jar",
 						onlyIfSuccessful: true
 					)	
-					/*
+
 					stash (
 						name: "binary",
 						includes: "target/*"
 					)
-					*/
 				}
 			}
 		
@@ -77,10 +76,8 @@ try {
 					}
 				)	
 			}	
-		}
 		
-		stage (name: "Deploy to Dev", concurrency: 1) {
-			node ("linux") {
+			stage ("Deploy to Dev") {
 				println ("Deploy to Dev...")
 				sh "sleep 5s" 
 			}
@@ -93,6 +90,7 @@ try {
 		stage (name: "Deploy to QA", concurrency: 1) {
 			node ("linux") {
 				println ("Deploy to QA...")
+				unstash ("binary")
 				sh "sleep 5s" 
 			}
 		}
@@ -104,6 +102,7 @@ try {
 		stage (name: "Deploy to Production", concurrency: 1) {
 			node ("linux") {
 				println ("Deploy to Production...")
+				unstash ("binary")
 				sh "sleep 5s" 
 			}
 		}	
