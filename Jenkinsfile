@@ -1,7 +1,7 @@
 #!/usr/bin/env groovy
  
 /**
- * Jenkinsfile for Jenkins2 Pipeline
+ * Pipeline
  */
  
 import hudson.model.*
@@ -59,22 +59,18 @@ try {
 			}
 		
 			stage ("Deploy to Dev") {
-				println ("Deploy to Dev...")
 				sh ("sleep 5s")
 			}
 			
 			stage ("Integration Test") {
 				parallel (
 					test1: {
-						println ("Execute Integration Test Module1...")
 						sh ("sleep 5s")
 					},
 					test2: {
-						println ("Execute Integration Test Module2...")
 						sh ("sleep 5s")
 					},
 					test3: {
-						println ("Execute Integration Test Module3...")
 						sh ("sleep 5s")
 					}
 				)	
@@ -87,7 +83,6 @@ try {
 
 		stage ("Deploy to QA") {
 			node ("linux") {
-				println ("Deploy to QA...")
 				unstash ("binary")
 				sh ("sleep 5s")
 			}
@@ -95,14 +90,23 @@ try {
 		
 		stage ("Regression Test") {
 			node ("linux") {
-				println ("Execute Regression Test...")
+				sh ("sleep 5s")
+			}
+		}		
+		
+		stage ("Promotion...") {
+			input ("Deploy to Production?")
+		}
+
+		stage ("Deploy to Production") {
+			node ("linux") {
+				unstash ("binary")
 				sh ("sleep 5s")
 			}
 		}		
 		
 		stage ("Smoke Test") {
 			node ("linux") {
-				println ("Execute Smoke Test...")
 				sh ("sleep 5s")
 			}
 		}
