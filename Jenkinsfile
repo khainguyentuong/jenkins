@@ -22,6 +22,10 @@ def notify(message) {
 try {
 	timestamps {
 		node ("master") {
+		
+		}
+		
+		node ("linux") {
 			stage("Pull Code") {
 				git branch: "master",
 					url: "https://github.com/spring-projects/spring-boot.git"
@@ -43,9 +47,7 @@ try {
 						onlyIfSuccessful: true
 				}
 			}
-		}
 		
-		node ("linux") {
 			stage("Execute Funtional Test") {
 				parallel test1: {
 					println "Test1..."
@@ -68,6 +70,15 @@ try {
 					sleep(5)
 				}				
 			}	
+		}
+		
+		input "Deploy to Dev?"
+		
+		node ("linux") {
+			stage(name: "Deploy", concurrency: 1) {
+				println "Deploy..."
+				sleep(10)	
+			}
 		}
 	}
 }	
