@@ -30,7 +30,7 @@ try {
 			}
 			
 			dir ("spring-boot-samples/spring-boot-sample-atmosphere") {
-				stage ("Build and Test") {
+				stage ("Build") {
 					sh ("mvn clean package")
 				}    
 
@@ -59,35 +59,27 @@ try {
 				}
 			}
 		
-			stage ("Execute Funtional Test") {
-				parallel (
-					test1: {
-						println ("Test1...")
-						sh ("sleep 5s")
-					}, 
-					test2: {
-						println ("Test2...")
-						sh ("sleep 5s")
-					}, 
-					test3: {
-						println ("Test3...")
-						sh ("sleep 5s")
-					},
-					test4: {
-						println ("Test4...")
-						sh ("sleep 5s")
-					},
-					test5: {
-						println ("Test5...")
-						sh ("sleep 5s")
-					}
-				)	
-			}	
-		
 			stage ("Deploy to Dev") {
 				println ("Deploy to Dev...")
 				sh ("sleep 5s")
 			}
+			
+			stage ("Integration Test") {
+				parallel (
+					test1: {
+						println ("Execute Integration Test Module1...")
+						sh ("sleep 5s")
+					},
+					test2: {
+						println ("Execute Integration Test Module2...")
+						sh ("sleep 5s")
+					},
+					test3: {
+						println ("Execute Integration Test Module3...")
+						sh ("sleep 5s")
+					}
+				)	
+			}	
 		}
 		
 		stage ("Promotion...") {
@@ -102,6 +94,13 @@ try {
 			}
 		}
 		
+		stage ("Regression Test") {
+			node ("linux") {
+				println ("Execute Regression Test...")
+				sh ("sleep 5s")
+			}
+		}		
+		
 		stage ("Promotion...") {
 			input ("Deploy to Production?")
 		}
@@ -112,7 +111,14 @@ try {
 				unstash ("binary")
 				sh ("sleep 5s")
 			}
-		}	
+		}
+		
+		stage ("Smoke Test") {
+			node ("linux") {
+				println ("Execute Smoke Test...")
+				sh ("sleep 5s")
+			}
+		}
 	}
 }	
 catch (err) {
