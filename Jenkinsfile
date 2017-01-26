@@ -36,7 +36,14 @@ try {
 
 				stage ("Run SonarQube Analysis") {
 					def scannerHome = tool "SonarQubeScanner";
-					sh ("${scannerHome}/bin/sonar-scanner -Dsonar.host.url=http://10.154.130.220/sonar -Dsonar.verbose=true -Dsonar.projectKey=${env.JOB_NAME} -Dsonar.projectVersion=1.0.${env.BUILD_NUMBER} -Dsonar.sources=.")
+					sh (
+						"${scannerHome}/bin/sonar-scanner
+						-Dsonar.host.url=http://10.154.130.220/sonar
+						-Dsonar.verbose=true
+						-Dsonar.projectKey=${env.JOB_NAME}
+						-Dsonar.projectVersion=1.0.${env.BUILD_NUMBER}
+						-Dsonar.sources=."
+					)
 				}				
 
 				stage ("Archive Artifacts") {
@@ -56,30 +63,30 @@ try {
 				parallel (
 					test1: {
 						println ("Test1...")
-						sh "sleep 5s" 
+						sh ("sleep 5s")
 					}, 
 					test2: {
 						println ("Test2...")
-						sh "sleep 5s" 
+						sh ("sleep 5s")
 					}, 
 					test3: {
 						println ("Test3...")
-						sh "sleep 5s" 
+						sh ("sleep 5s")
 					},
 					test4: {
 						println ("Test4...")
-						sh "sleep 5s" 
+						sh ("sleep 5s")
 					},
 					test5: {
 						println ("Test5...")
-						sh "sleep 5s" 
+						sh ("sleep 5s")
 					}
 				)	
 			}	
 		
 			stage ("Deploy to Dev") {
 				println ("Deploy to Dev...")
-				sh "sleep 5s" 
+				sh ("sleep 5s")
 			}
 		}
 		
@@ -91,7 +98,7 @@ try {
 			node ("linux") {
 				println ("Deploy to QA...")
 				unstash ("binary")
-				sh "sleep 5s" 
+				sh ("sleep 5s")
 			}
 		}
 		
@@ -103,7 +110,7 @@ try {
 			node ("linux") {
 				println ("Deploy to Production...")
 				unstash ("binary")
-				sh "sleep 5s" 
+				sh ("sleep 5s")
 			}
 		}	
 	}
